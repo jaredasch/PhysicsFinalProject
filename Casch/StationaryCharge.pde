@@ -7,10 +7,10 @@ public class StationaryCharge{
   private int radius;
   
   public StationaryCharge(){
-    x = Math.random() * 
-    y = Math.random() * 
-    charge = Math.random() * 
-    radius = 
+    x = Math.random() * 1024;
+    y = Math.random() * 1024;
+    charge = (Math.random() * 20) - 10;  //from -10 to 10
+    radius = abs(charge * 10);
   }
   public int getCharge(){ //accesor for charge
      return charge;
