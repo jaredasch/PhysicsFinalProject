@@ -3,13 +3,14 @@ class Charge {
     
     Vector position;
     Vector velocity;
-    
+    boolean isProjectile;
     double magnitude;
     
-    public Charge(Vector r, Vector v, double q){
+    public Charge(Vector r, Vector v, double q, boolean b){
         position = r;
         velocity = v;
         magnitude = q;
+        isProjectile = b;
     }
     
     public Vector forceFrom(Charge q){
@@ -17,12 +18,19 @@ class Charge {
         double distance = r.magnitude();
         double forceMagnitude = (1 / (4 * Math.PI * epsilon_naught)) * (this.magnitude * q.magnitude / (distance * distance));
         r.normalize();
-        return r.scalarMultiply(forceMagnitude);
+        return r.scalarMultiply(forceMagnitude*.000000001);
     }
-}
-
-void setup(){
-    Charge q1 = new Charge(new Vector(0, 0, 0), new Vector(0, 0, 0), 1);
-    Charge q2 = new Charge(new Vector(1, 1, 1), new Vector(0, 0, 0), 1);
-    System.out.println(q1.forceFrom(q2));
+    
+    public void display(){
+      float radius = abs((float)magnitude) * 2; //radius is proportional to magnitude
+      if (magnitude < 0){ //negative charge is blue
+        double blue = magnitude*-1/50 *100 + 100; //(100-200)
+        fill(0,0,Math.round(blue));
+      }
+      else{
+        double red = magnitude/50 *100 + 100; //(100-200)
+        fill(Math.round(red),0,0);
+      }
+      ellipse((float)position.x,(float)position.y,radius,radius);
+    }
 }
