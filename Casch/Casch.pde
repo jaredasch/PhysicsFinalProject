@@ -60,6 +60,16 @@ void draw(){
            p0.position = new Vector(50,s-100,0);
            p0.velocity = new Vector(0,0,0);
         }
+        
+       for (int i=0; i < board.size(); i++){ //loops through charges to check for collision
+         Charge c = (Charge) board.get(i);
+         if (c instanceof StationaryCharge && p0.collision(c)){
+          animation = false;
+          turn = 1;
+          p0.position = new Vector(50,s-100,0);
+          p0.velocity = new Vector(0,0,0);
+         }
+       }  
      }
      if (turn == 1 && animation){
         for (int i=0; i < board.size(); i++){
@@ -77,6 +87,16 @@ void draw(){
            p1.position = new Vector(s-50,s-100,0);
            p1.velocity = new Vector(0,0,0);
         }
+        
+        for (int i=0; i < board.size(); i++){ //loops through charges to check for collision
+           Charge c = (Charge) board.get(i);
+           if (c instanceof StationaryCharge && p1.collision(c)){
+              animation = false;
+              turn = 0;
+              p1.position = new Vector(s-50,s-100,0);
+              p1.velocity = new Vector(0,0,0);        
+            }
+         }  
      }
 }
 
@@ -88,21 +108,26 @@ void whenClick(){
     Vector v = new Vector(mouseX, mouseY, 0);
     if (turn == 0){
       Vector resultant = v.add(p0.position.scalarMultiply(-1.0));
+      double constant = resultant.magnitude();
       //System.out.println(resultant.toString());
-      if (resultant.magnitude() > 80){
-        resultant.normalize();
-        resultant.scalarMultiply(80);
+      if (resultant.magnitude() > 100){
+        constant = 100;
       }
+      System.out.println(constant);
+      resultant.normalize();
+      resultant.scalarMultiply(constant);
       p0.velocity = resultant;
       animation = true;
     }
     if (turn == 1){
       Vector resultant = v.add(p1.position.scalarMultiply(-1.0));
+      double constant = resultant.magnitude();
       //System.out.println(resultant.toString());
-      if (resultant.magnitude() > 80){
-        resultant.normalize();
-        resultant.scalarMultiply(80);
+      if (resultant.magnitude() > 100){
+        constant = 100;
       }
+      resultant.normalize();
+      resultant.scalarMultiply(constant);
       p1.velocity = resultant;
       animation = true;
     }
