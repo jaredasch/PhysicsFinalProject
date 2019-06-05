@@ -14,8 +14,8 @@ void setup(){
   board = new ArrayList();
   p0 = new Projectile(new Vector(50,s-100,0), new Vector(0,0,0), 10);
   p1 = new Projectile(new Vector(s-50,s-100,0), new Vector(0,0,0), 10);
-  
-  Vector v = new Vector(Math.random()*(s-100) + 50, Math.random()*(s-100), 0); //cant be 50 within walls or in the floor
+    
+  /*Vector v = new Vector(Math.random()*(s-100) + 50, Math.random()*(s-100), 0); //cant be 50 within walls or in the floor
   double q = Math.random() * 200 - 100; //charge between -100 and 100
   sc_0 = new StationaryCharge(v,q);
   
@@ -25,7 +25,15 @@ void setup(){
   
   v = new Vector(Math.random()*(s-100) + 50, Math.random()*(s-100), 0);
   q = Math.random() * 200 - 100;
-  sc_2 = new StationaryCharge(v,q);
+  sc_2 = new StationaryCharge(v,q);*/
+  
+  Vector a = new Vector(400,600,0);
+  Vector b = new Vector(400,100,0);
+  Vector c = new Vector(100,300,0);
+
+  sc_0 = new StationaryCharge(a,-100);
+  sc_1 = new StationaryCharge(b,50);
+  sc_2 = new StationaryCharge(c,20);
   
   board.add(sc_0);
   board.add(sc_1);
@@ -52,10 +60,10 @@ void draw(){
           }
         }
         
-        stroke(0,256,0);
+        stroke(0,256,0); //green velocity vector
         strokeWeight(4);
         System.out.println(p0.velocity.toString());
-        line((float)p0.position.x,(float)p0.position.y,(float)p0.position.x + (float)p0.velocity.x,(float)p0.position.y + (float)p0.velocity.y);
+        line((float)p0.position.x,(float)p0.position.y,((float)p0.position.x + (float)p0.velocity.x),((float)p0.position.y + (float)p0.velocity.y));
         stroke(0,0,0);
         strokeWeight(1);
         
@@ -114,6 +122,35 @@ void draw(){
               p1.velocity = new Vector(0,0,0);        
             }
          }  
+     }
+     
+     if (turn == 0 && !animation){ //shows the mouse thingy
+       Vector v = new Vector(mouseX,mouseY,0);
+       v = v.add(p0.position.scalarMultiply(-1));
+       if (v.magnitude() > 100){
+         v.normalize();
+         v = v.scalarMultiply(100);
+       }
+               
+       stroke(256,256,0);
+       strokeWeight(4);
+       line((float)p0.position.x,(float)p0.position.y,(float)p0.position.x+(float)v.x,(float)p0.position.y+(float)v.y);
+       stroke(0,0,0);
+       strokeWeight(1);
+     }
+     if (turn == 1 && !animation){ //shows the mouse thingy
+       Vector v = new Vector(mouseX,mouseY,0);
+       v = v.add(p1.position.scalarMultiply(-1));
+       if (v.magnitude() > 100){
+         v.normalize();
+         v = v.scalarMultiply(100);
+       }
+             
+       stroke(256,256,0);
+       strokeWeight(4);
+       line((float)p1.position.x,(float)p1.position.y,(float)p1.position.x+(float)v.x,(float)p1.position.y+(float)v.y);
+       stroke(0,0,0);
+       strokeWeight(1);
      }
 }
 
