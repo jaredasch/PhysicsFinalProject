@@ -12,19 +12,19 @@ boolean animation;
 void setup(){
   size(800, 800);
   board = new ArrayList();
-  p0 = new Charge(new Vector(50,s-100,0), new Vector(0,0,0), 10, true);
-  p1 = new Charge(new Vector(s-50,s-100,0), new Vector(0,0,0), 10, true);
+  p0 = new Projectile(new Vector(50,s-100,0), new Vector(0,0,0), 10);
+  p1 = new Projectile(new Vector(s-50,s-100,0), new Vector(0,0,0), 10);
   
   Vector v = new Vector(Math.random()*(s-100) + 50, Math.random()*(s-100), 0); //cant be 50 within walls or in the floor
-  double q = Math.random() * 100 - 50;
+  double q = Math.random() * 200 - 100; //charge between -100 and 100
   sc_0 = new StationaryCharge(v,q);
   
   v = new Vector(Math.random()*(s-100) + 50, Math.random()*(s-100), 0);
-  q = Math.random() * 100 - 50;
+  q = Math.random() * 200 - 100;
   sc_1 = new StationaryCharge(v,q);
   
   v = new Vector(Math.random()*(s-100) + 50, Math.random()*(s-100), 0);
-  q = Math.random() * 100 - 50;
+  q = Math.random() * 200 - 100;
   sc_2 = new StationaryCharge(v,q);
   
   board.add(sc_0);
@@ -51,6 +51,14 @@ void draw(){
             p0.velocity = p0.velocity.add(p0.forceFrom(c));
           }
         }
+        
+        stroke(0,256,0);
+        strokeWeight(4);
+        System.out.println(p0.velocity.toString());
+        line((float)p0.position.x,(float)p0.position.y,(float)p0.position.x + (float)p0.velocity.x,(float)p0.position.y + (float)p0.velocity.y);
+        stroke(0,0,0);
+        strokeWeight(1);
+        
         Vector increment = p0.position.add(p0.velocity);
         p0.position =  increment;
         
@@ -71,6 +79,7 @@ void draw(){
          }
        }  
      }
+     
      if (turn == 1 && animation){
         for (int i=0; i < board.size(); i++){
           Charge c = (Charge) board.get(i); 
@@ -80,6 +89,14 @@ void draw(){
         }
         Vector increment = p1.position.add(p1.velocity);
         p1.position =  increment;
+        
+        
+        stroke(0,256,0);
+        strokeWeight(4);
+        System.out.println(p0.velocity.toString());
+        line((float)p1.position.x,(float)p1.position.y,(float)p1.position.x + (float)p1.velocity.x,(float)p1.position.y + (float)p1.velocity.y);
+        stroke(0,0,0);
+        strokeWeight(1);
         
         if(p1.position.x > s || p1.position.x < 0 || p1.position.y > (s-100) || p1.position.y < 0){
            animation = false;
@@ -106,28 +123,27 @@ void mouseClicked(){
 
 void whenClick(){
     Vector v = new Vector(mouseX, mouseY, 0);
-    if (turn == 0){
+    if (turn == 0 && !animation){
       Vector resultant = v.add(p0.position.scalarMultiply(-1.0));
-      double constant = resultant.magnitude();
-      //System.out.println(resultant.toString());
+      double constant = 8 * (resultant.magnitude() / 100);
       if (resultant.magnitude() > 100){
-        constant = 100;
+        constant = 8;
       }
-      System.out.println(constant);
       resultant.normalize();
-      resultant.scalarMultiply(constant);
+      System.out.println(resultant.magnitude());
+      resultant = resultant.scalarMultiply(constant);
       p0.velocity = resultant;
+      System.out.println(resultant.magnitude());
       animation = true;
     }
-    if (turn == 1){
+    if (turn == 1 && !animation){
       Vector resultant = v.add(p1.position.scalarMultiply(-1.0));
-      double constant = resultant.magnitude();
-      //System.out.println(resultant.toString());
+      double constant = 8 * (resultant.magnitude() / 100);
       if (resultant.magnitude() > 100){
-        constant = 100;
+        constant = 8;
       }
       resultant.normalize();
-      resultant.scalarMultiply(constant);
+      resultant = resultant.scalarMultiply(constant);
       p1.velocity = resultant;
       animation = true;
     }
