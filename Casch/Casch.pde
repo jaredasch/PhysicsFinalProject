@@ -7,6 +7,8 @@ StationaryCharge sc_2;
 int s = 800; //size of screen sxs
 int turn = 0; //0 - Player 0, 1 - Player 1
 boolean animation;
+Player player0;
+Player player1;
 
 
 void setup(){
@@ -35,6 +37,11 @@ void setup(){
   sc_1 = new StationaryCharge(b,50);
   sc_2 = new StationaryCharge(c,20);
   
+  Vector d = new Vector(40,700,0);
+  player0 = new Player(100,d,20,10);
+  Vector e = new Vector(860,700,0);
+  player1 = new Player(100,e,20,10);
+  
   board.add(sc_0);
   board.add(sc_1);
   board.add(sc_2);
@@ -51,6 +58,9 @@ void draw(){
     Charge c = (Charge) board.get(i); 
       c.display();
   }
+  
+  player0.display();
+  player1.display();
   
      if (turn == 0 && animation){        
         for (int i=0; i < board.size(); i++){
@@ -79,7 +89,7 @@ void draw(){
         
        for (int i=0; i < board.size(); i++){ //loops through charges to check for collision
          Charge c = (Charge) board.get(i);
-         if (c instanceof StationaryCharge && p0.collision(c)){
+         if (c instanceof StationaryCharge && p0.chargeCollision(c)){
           animation = false;
           turn = 1;
           p0.position = new Vector(50,s-100,0);
@@ -115,7 +125,7 @@ void draw(){
         
         for (int i=0; i < board.size(); i++){ //loops through charges to check for collision
            Charge c = (Charge) board.get(i);
-           if (c instanceof StationaryCharge && p1.collision(c)){
+           if (c instanceof StationaryCharge && p1.chargeCollision(c)){
               animation = false;
               turn = 0;
               p1.position = new Vector(s-50,s-100,0);

@@ -33,12 +33,16 @@ class Charge {
       ellipse((float)position.x,(float)position.y,radius,radius);
     }
     
-    public boolean collision(Charge q){
-      if ((this.position.x + this.radius) > (q.position.x - q.radius) && (this.position.x - this.radius) < (q.position.x + q.radius)){
-        if((this.position.y + this.radius) > (q.position.y - q.radius) && (this.position.y - this.radius) < (q.position.y + q.radius)){
-          return true;
-        }
+    public boolean chargeCollision(Charge q){
+      if(distance(q) < q.radius){
+       return true; 
       }
       return false;
+    }
+    
+    public double distance(Charge q){
+      double x = q.position.x - this.position.x;
+      double y = q.position.y - this.position.y;
+      return Math.sqrt(x*x + y*y);
     }
 }
