@@ -9,6 +9,9 @@ int turn = 0; //0 - Player 0, 1 - Player 1
 boolean animation;
 Player player0;
 Player player1;
+double hitConstant = .2; //multiplies velocity squared
+int winner = 3;
+boolean winningMessage = false;
 
 
 void setup(){
@@ -35,12 +38,12 @@ void setup(){
 
   sc_0 = new StationaryCharge(a,-100);
   sc_1 = new StationaryCharge(b,50);
-  sc_2 = new StationaryCharge(c,20);
+  sc_2 = new StationaryCharge(c,40);
   
-  Vector d = new Vector(40,700,0);
-  player0 = new Player(100,d,20,10);
-  Vector e = new Vector(860,700,0);
-  player1 = new Player(100,e,20,10);
+  Vector d = new Vector(20,680,0);
+  player0 = new Player(100,d,35,35);
+  Vector e = new Vector(780,680,0);
+  player1 = new Player(100,e,35,35);
   
   board.add(sc_0);
   board.add(sc_1);
@@ -54,6 +57,21 @@ void draw(){
   fill(210,180,140);
   rect(0,s-100,s,100);
   
+  if (winningMessage){
+   String s;
+   if(winner == 0){
+     s = "Player 0 wins!";
+   }
+   else{
+     s = "Player 1 wins!";
+   }
+   clear();
+   textSize(40);
+   text(s, 300, 400); 
+   delay(10000);
+   exit();
+  }
+  
   for (int i=0; i < board.size(); i++){
     Charge c = (Charge) board.get(i); 
       c.display();
@@ -61,6 +79,10 @@ void draw(){
   
   player0.display();
   player1.display();
+  
+  textSize(32);
+  fill(128,128,0);
+  text("Health: " +player0.toString() + " - " + player1.toString(), 250, 750);   
   
      if (turn == 0 && animation){        
         for (int i=0; i < board.size(); i++){
@@ -72,7 +94,7 @@ void draw(){
         
         stroke(0,256,0); //green velocity vector
         strokeWeight(4);
-        System.out.println(p0.velocity.toString());
+        //System.out.println(p0.velocity.toString());
         line((float)p0.position.x,(float)p0.position.y,((float)p0.position.x + (float)p0.velocity.x),((float)p0.position.y + (float)p0.velocity.y));
         stroke(0,0,0);
         strokeWeight(1);
@@ -95,7 +117,21 @@ void draw(){
           p0.position = new Vector(50,s-100,0);
           p0.velocity = new Vector(0,0,0);
          }
-       }  
+       }
+       
+       if(p0.playerCollision(player1)){
+         double mag = p0.velocity.magnitude();
+         player1.hp = (int)(player1.hp - mag*mag*hitConstant);
+         animation = false;
+         turn = 1;
+         p0.position = new Vector(50,s-100,0);
+         p0.velocity = new Vector(0,0,0);
+         
+         if(player1.hp < 0){
+            winner = 0;
+            winningMessage = true;
+         }         
+       }
      }
      
      if (turn == 1 && animation){
@@ -111,7 +147,7 @@ void draw(){
         
         stroke(0,256,0);
         strokeWeight(4);
-        System.out.println(p0.velocity.toString());
+        //System.out.println(p0.velocity.toString());
         line((float)p1.position.x,(float)p1.position.y,(float)p1.position.x + (float)p1.velocity.x,(float)p1.position.y + (float)p1.velocity.y);
         stroke(0,0,0);
         strokeWeight(1);
@@ -131,7 +167,21 @@ void draw(){
               p1.position = new Vector(s-50,s-100,0);
               p1.velocity = new Vector(0,0,0);        
             }
-         }  
+         }
+         
+         if(p1.playerCollision(player0)){
+           double mag = p1.velocity.magnitude();
+           player0.hp = (int)(player0.hp - mag*mag*hitConstant);
+           animation = false;
+           turn = 0;
+           p1.position = new Vector(s-50,s-100,0);
+           p1.velocity = new Vector(0,0,0);
+           
+           if(player0.hp < 0){
+              winner = 1;
+              winningMessage = true;
+           }
+       }
      }
      
      if (turn == 0 && !animation){ //shows the mouse thingy
@@ -177,10 +227,10 @@ void whenClick(){
         constant = 8;
       }
       resultant.normalize();
-      System.out.println(resultant.magnitude());
+      //System.out.println(resultant.magnitude());
       resultant = resultant.scalarMultiply(constant);
       p0.velocity = resultant;
-      System.out.println(resultant.magnitude());
+      //System.out.println(resultant.magnitude());
       animation = true;
     }
     if (turn == 1 && !animation){

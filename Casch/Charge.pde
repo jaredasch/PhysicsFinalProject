@@ -34,7 +34,14 @@ class Charge {
     }
     
     public boolean chargeCollision(Charge q){
-      if(distance(q) < q.radius){
+      if(distance(q) < q.radius - 30){
+       return true; 
+      }
+      return false;
+    }
+    
+    public boolean playerCollision(Player p){
+      if(p.distance(this) < this.radius + p.h*Math.sqrt(2)){
        return true; 
       }
       return false;
