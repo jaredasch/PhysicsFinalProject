@@ -20,26 +20,54 @@ void setup(){
   p0 = new Projectile(new Vector(50,s-100,0), new Vector(0,0,0), 10);
   p1 = new Projectile(new Vector(s-50,s-100,0), new Vector(0,0,0), 10);
     
-  /*Vector v = new Vector(Math.random()*(s-100) + 50, Math.random()*(s-100), 0); //cant be 50 within walls or in the floor
-  double q = Math.random() * 200 - 100; //charge between -100 and 100
-  sc_0 = new StationaryCharge(v,q);
+  //------------------ Randomize board of 3 stationary charges -------------------------------
+  int rand = (int)(Math.random()*4);
+  int q1 = 0;
+  int q2 = 0;
+  int q3 = 0;
+  Vector a = new Vector(0,0,0);
+  Vector b = new Vector(0,0,0);
+  Vector c = new Vector(0,0,0);
+  if (rand == 0){
+    a = new Vector(400,550,0);
+    b = new Vector(400,100,0);
+    c = new Vector(100,300,0);
+    q1 = -100;
+    q2 = 70;
+    q3 = 40;
+  }
+  if (rand == 1){
+    a = new Vector(100,500,0);
+    b = new Vector(700,500,0);
+    c = new Vector(400,300,0);
+    q1 = -20;
+    q2 = -20;
+    q3 = 100;
+  }
+  if (rand == 2){
+    a = new Vector(400,650,0);
+    b = new Vector(400,550,0);
+    c = new Vector(400,100,0);
+    q1 = -20;
+    q2 = -40;
+    q3 = 100;
+  }
+  if (rand == 3){
+    a = new Vector(400,300,0);
+    b = new Vector(450,600,0);
+    c = new Vector(350,600,0);
+    q1 = 100;
+    q2 = -10;       ;
+    q3 = -10;
+  }
   
-  v = new Vector(Math.random()*(s-100) + 50, Math.random()*(s-100), 0);
-  q = Math.random() * 200 - 100;
-  sc_1 = new StationaryCharge(v,q);
-  
-  v = new Vector(Math.random()*(s-100) + 50, Math.random()*(s-100), 0);
-  q = Math.random() * 200 - 100;
-  sc_2 = new StationaryCharge(v,q);*/
-  
-  Vector a = new Vector(400,600,0);
-  Vector b = new Vector(400,100,0);
-  Vector c = new Vector(100,300,0);
 
-  sc_0 = new StationaryCharge(a,-100);
-  sc_1 = new StationaryCharge(b,50);
-  sc_2 = new StationaryCharge(c,40);
+  sc_0 = new StationaryCharge(a,q1);
+  sc_1 = new StationaryCharge(b,q2);
+  sc_2 = new StationaryCharge(c,q3);
   
+  //-----------------------------------------------------------------------------------------------------
+
   Vector d = new Vector(20,680,0);
   player0 = new Player(100,d,35,35);
   Vector e = new Vector(780,680,0);
@@ -58,6 +86,7 @@ void draw(){
   rect(0,s-100,s,100);
   
   if (winningMessage){
+   System.out.println("one");
    String s;
    if(winner == 0){
      s = "Player 0 wins!";
@@ -65,15 +94,15 @@ void draw(){
    else{
      s = "Player 1 wins!";
    }
+   System.out.println("two");
    clear();
    textSize(40);
-   text(s, 300, 400); 
-   delay(10000);
+   text(s, 300, 400);
    exit();
   }
   
   for (int i=0; i < board.size(); i++){
-    Charge c = (Charge) board.get(i); 
+    Charge c = (Charge) board.get(i);
       c.display();
   }
   
@@ -212,6 +241,8 @@ void draw(){
        stroke(0,0,0);
        strokeWeight(1);
      }
+    System.out.println(winningMessage);
+    System.out.println(winner);
 }
 
 void mouseClicked(){
