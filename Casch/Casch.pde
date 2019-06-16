@@ -255,9 +255,9 @@ void whenClick(){
     Vector v = new Vector(mouseX, mouseY, 0);
     if (turn == 0 && !animation){
       Vector resultant = v.add(p0.position.scalarMultiply(-1.0));
-      double constant = 8 * (resultant.magnitude() / 100);
+      double constant = 10 * (resultant.magnitude() / 100);
       if (resultant.magnitude() > 100){
-        constant = 8;
+        constant = 10;
       }
       resultant.normalize();
       //System.out.println(resultant.magnitude());
@@ -268,9 +268,9 @@ void whenClick(){
     }
     if (turn == 1 && !animation){
       Vector resultant = v.add(p1.position.scalarMultiply(-1.0));
-      double constant = 8 * (resultant.magnitude() / 100);
+      double constant = 10 * (resultant.magnitude() / 100);
       if (resultant.magnitude() > 100){
-        constant = 8;
+        constant = 10;
       }
       resultant.normalize();
       resultant = resultant.scalarMultiply(constant);
