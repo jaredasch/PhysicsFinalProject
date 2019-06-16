@@ -34,7 +34,7 @@ class Charge {
     }
     
     public boolean chargeCollision(Charge q){
-      if(distance(q) < q.radius - 30){
+      if(distance(q) < q.radius - 10){
        return true; 
       }
       return false;
