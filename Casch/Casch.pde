@@ -30,6 +30,8 @@ void setup(){
   Vector a = new Vector(0,0,0);
   Vector b = new Vector(0,0,0);
   Vector c = new Vector(0,0,0);
+  
+  rand = 3;
   if (rand == 0){
     a = new Vector(400,550,0);
     b = new Vector(400,100,0);
@@ -158,7 +160,7 @@ void draw(){
          p0.position = new Vector(50,s-100,0);
          p0.velocity = new Vector(0,0,0);
          
-         if(player1.hp < 0){
+         if(player1.hp <= 0){
             winner = 0;
             winningMessage = true;
          }         
@@ -208,7 +210,7 @@ void draw(){
            p1.position = new Vector(s-50,s-100,0);
            p1.velocity = new Vector(0,0,0);
            
-           if(player0.hp < 0){
+           if(player0.hp <= 0){
               winner = 1;
               winningMessage = true;
            }
