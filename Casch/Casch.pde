@@ -281,7 +281,6 @@ void whenClick(){
 
 void drawElectricFields(){
     pushStyle();
-    stroke(255, 0, 0);
     strokeWeight(3);
     
     for(int x = 0; x < 800; x += 40){
@@ -295,9 +294,26 @@ void drawElectricFields(){
                 field = field.add( testCharge.forceFrom(c) );
               }
             }
-            field = field.scalarMultiply(100);
-            line((float) x, (float) y, (float) (x + field.x), (float) (y + field.y));
+            
+            double magnitude = field.magnitude();
+            stroke((int) (4000 * magnitude), 0, 0);
+            field.normalize();
+            field = field.scalarMultiply(20);
+            arrow(x, y, (int) (x + field.x), (int) (y + field.y));
         }
     }
     popStyle();
+}
+
+
+// Code to draw an arrow borrowed from https://processing.org/discourse/beta/num_1219607845.html
+void arrow(int x1, int y1, int x2, int y2) {
+  line(x1, y1, x2, y2);
+  pushMatrix();
+  translate(x2, y2);
+  float a = atan2(x1-x2, y2-y1);
+  rotate(a);
+  line(0, 0, -4, -4);
+  line(0, 0, 4, -4);
+  popMatrix();
 }
