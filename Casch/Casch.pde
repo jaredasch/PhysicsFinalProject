@@ -13,6 +13,8 @@ double hitConstant = .2; //multiplies velocity squared
 int winner = 3;
 boolean winningMessage = false;
 
+boolean electric_field_visible = false;
+
 
 void setup(){
   size(800, 800);
@@ -84,7 +86,7 @@ void draw(){
   clear();
   fill(210,180,140);
   rect(0,s-100,s,100);
-  
+  drawElectricFields();
   if (winningMessage){
    System.out.println("one");
    String s;
@@ -275,4 +277,27 @@ void whenClick(){
       p1.velocity = resultant;
       animation = true;
     }
+}
+
+void drawElectricFields(){
+    pushStyle();
+    stroke(255, 0, 0);
+    strokeWeight(3);
+    
+    for(int x = 0; x < 800; x += 40){
+        for(int y = 0; y < s - 100; y += 40){
+            Vector field = new Vector(0, 0, 0);
+            Charge testCharge = new Charge(new Vector(x, y, 0), new Vector(0, 0, 0), 1);
+            
+            for (int i=0; i < board.size(); i++){
+              Charge c = (Charge) board.get(i); 
+              if(c instanceof StationaryCharge){
+                field = field.add( testCharge.forceFrom(c) );
+              }
+            }
+            field = field.scalarMultiply(100);
+            line((float) x, (float) y, (float) (x + field.x), (float) (y + field.y));
+        }
+    }
+    popStyle();
 }
